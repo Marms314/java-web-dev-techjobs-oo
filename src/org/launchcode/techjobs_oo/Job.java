@@ -42,12 +42,23 @@ public class Job {
 
     @Override
     public String toString(){
-        return "\nID:  " + this.id + "\n" +
-                "Name: " + (this.name != null ? this.name : "Data not available") + "\n" +
-                "Employer: " + (this.employer != null ? this.employer.toString() : "Data not available") + "\n" +
-                "Location: " + (this.location != null ? this.location.toString() : "Data not available") + "\n" +
-                "Position Type: " + (this.positionType != null ? this.positionType.toString() : "Data not available") + "\n" +
-                "Core Competency: " + (this.coreCompetency != null ? this.coreCompetency.toString() : "Data not available") + "\n";
+        boolean nameIsNull = this.name == null;
+        boolean employerIsNull = this.employer == null;
+        boolean locationIsNull = this.location == null;
+        boolean positionTypeIsNull = this.positionType == null;
+        boolean coreCompetencyIsNull = this.coreCompetency == null;
+        boolean allAreNull = nameIsNull && employerIsNull && locationIsNull && positionTypeIsNull && coreCompetencyIsNull;
+
+        if(allAreNull) {
+            return "\nOOPS! This job does not seem to exist.\n";
+        } else {
+            return "\nID:  " + this.id + "\n" +
+                    "Name: " + (nameIsNull ? "Data not available" : this.name) + "\n" +
+                    "Employer: " + (employerIsNull ? "Data not available" : this.employer.toString()) + "\n" +
+                    "Location: " + (locationIsNull ? "Data not available" : this.location.toString()) + "\n" +
+                    "Position Type: " + (positionTypeIsNull ? "Data not available" : this.positionType.toString()) + "\n" +
+                    "Core Competency: " + (coreCompetencyIsNull ? "Data not available" : this.coreCompetency.toString()) + "\n";
+        }
     }
 
     public int getId() {
