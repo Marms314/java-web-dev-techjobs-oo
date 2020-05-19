@@ -40,6 +40,16 @@ public class Job {
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString(){
+        return "\nID:  " + this.id + "\n" +
+                "Name: " + (this.name != null ? this.name : "Data not available") + "\n" +
+                "Employer: " + (this.employer != null ? this.employer.toString() : "Data not available") + "\n" +
+                "Location: " + (this.location != null ? this.location.toString() : "Data not available") + "\n" +
+                "Position Type: " + (this.positionType != null ? this.positionType.toString() : "Data not available") + "\n" +
+                "Core Competency: " + (this.coreCompetency != null ? this.coreCompetency.toString() : "Data not available") + "\n";
+    }
+
     public int getId() {
         return id;
     }

@@ -6,48 +6,75 @@ import static org.junit.Assert.*;
 
 
 public class JobTest {
-    Job idTestJob1 = new Job();
-    Job idTestJob2 = new Job();
-    Job constructorTestJob = new Job("Product tester", new Employer("ACME"), new Location("Desert"),
+    Job idOnlyJob1 = new Job();
+    Job idOnlyJob2 = new Job();
+    Job filledConstructorJob1 = new Job("Product tester", new Employer("ACME"), new Location("Desert"),
             new PositionType("Quality control"), new CoreCompetency("Persistence"));
-    Job equalsTestJob = new Job("Product tester", new Employer("ACME"), new Location("Desert"),
+    Job filledConstructorJob2 = new Job("Product tester", new Employer("ACME"), new Location("Desert"),
             new PositionType("Quality control"), new CoreCompetency("Persistence"));
+    Job nullConstructorJob = new Job(null, null, null,null, null);
 
     @Test
     public void testSettingJobId() {
-        assertNotEquals(idTestJob1.getId(), idTestJob2.getId());
-        assertEquals(idTestJob1.getId() + 1, idTestJob2.getId());
+        assertNotEquals(idOnlyJob1.getId(), idOnlyJob2.getId());
+        assertEquals(idOnlyJob1.getId() + 1, idOnlyJob2.getId());
     }
 
     @Test
     public void testJobConstructorSetsAllFields() {
-        assertSame("Product tester", constructorTestJob.getName());
-        assertEquals(idTestJob2.getId() + 1, constructorTestJob.getId());
-        /*
-        TODO: Used the workaround above of having the id be checked to be 1 higher than idTestJob2 to make the test pass.
-         Check with Steve if this is the correct way to take care of this or if the ids not being the same as the previous compile is a bug.
-         The ids on all the jobs get higher with each compile with new tests, while I thought they would be able to stay the same.
-        */
-        assertSame("ACME", constructorTestJob.getEmployer().toString());
-        assertSame("Desert", constructorTestJob.getLocation().toString());
-        assertSame("Quality control", constructorTestJob.getPositionType().toString());
-        assertSame("Persistence", constructorTestJob.getCoreCompetency().toString());
-        /*
-        TODO: int cannot be tested with instanceof because it is a primitive type.
-         Discuss workarounds or if it should be disregarded with Steve.
-         I was unable to find a good equivalent in java to JavaScript's typeof which would fill this purpose.
-         Should the int be cast to an Integer?
-         https://education.launchcode.org/java-web-development/assignments/tech-jobs-oo.html#test-the-full-constructor
-        */
-        assertTrue(constructorTestJob.getName() instanceof String);
-        assertTrue(constructorTestJob.getEmployer() instanceof Employer);
-        assertTrue(constructorTestJob.getLocation() instanceof Location);
-        assertTrue(constructorTestJob.getPositionType() instanceof PositionType);
-        assertTrue(constructorTestJob.getCoreCompetency() instanceof CoreCompetency);
+        assertSame("Product tester", filledConstructorJob1.getName());
+        assertEquals(idOnlyJob2.getId() + 1, filledConstructorJob1.getId());
+        assertSame("ACME", filledConstructorJob1.getEmployer().toString());
+        assertSame("Desert", filledConstructorJob1.getLocation().toString());
+        assertSame("Quality control", filledConstructorJob1.getPositionType().toString());
+        assertSame("Persistence", filledConstructorJob1.getCoreCompetency().toString());
+        assertTrue(filledConstructorJob1.getName() instanceof String);
+        assertTrue(filledConstructorJob1.getEmployer() instanceof Employer);
+        assertTrue(filledConstructorJob1.getLocation() instanceof Location);
+        assertTrue(filledConstructorJob1.getPositionType() instanceof PositionType);
+        assertTrue(filledConstructorJob1.getCoreCompetency() instanceof CoreCompetency);
     }
 
     @Test
     public void testJobsForEquality() {
-        assertFalse(equalsTestJob.equals(constructorTestJob));
+        assertFalse(filledConstructorJob2.equals(filledConstructorJob1));
+    }
+
+    @Test
+    public void testToStringBeginsAndEndsWithNewLine() {
+        assertEquals(0, filledConstructorJob1.toString().indexOf("\n"));
+        assertEquals(filledConstructorJob1.toString().length() - 1, filledConstructorJob1.toString().lastIndexOf("\n"));
+    }
+
+    @Test
+    public void testToStringWithAllFieldsFilled() {
+        assertEquals("\nID:  " + (idOnlyJob2.getId() + 1) + "\n" +
+                "Name: Product tester\n" +
+                "Employer: ACME\n" +
+                "Location: Desert\n" +
+                "Position Type: Quality control\n" +
+                "Core Competency: Persistence\n",
+                filledConstructorJob1.toString()
+        );
+    }
+
+    @Test
+    public void testToStringMissingAllFields() {
+        assertEquals("\nID:  " + (filledConstructorJob2.getId() + 1) + "\n" +
+                        "Name: Data not available\n" +
+                        "Employer: Data not available\n" +
+                        "Location: Data not available\n" +
+                        "Position Type: Data not available\n" +
+                        "Core Competency: Data not available\n",
+                nullConstructorJob.toString()
+        );
+        assertEquals("\nID:  " + (idOnlyJob1.getId() + 1) + "\n" +
+                        "Name: Data not available\n" +
+                        "Employer: Data not available\n" +
+                        "Location: Data not available\n" +
+                        "Position Type: Data not available\n" +
+                        "Core Competency: Data not available\n",
+                idOnlyJob2.toString()
+        );
     }
 }
